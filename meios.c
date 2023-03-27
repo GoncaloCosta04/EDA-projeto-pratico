@@ -2,9 +2,14 @@
 #include <stdlib.h>
 #include <string.h>
 #include "meios.h"
-#include "clientes.h"
 
 
+/**
+ * @brief 
+ * 
+ * @param inicio 
+ * @return int 
+ */
 int guardarMeios(Meio* inicio)
 {FILE* fp;
  fp = fopen("meios.txt","w");
@@ -23,6 +28,13 @@ int guardarMeios(Meio* inicio)
  else return(0);
 }
 
+
+/**
+ * @brief 
+ * 
+ * @param inicio 
+ * @return int 
+ */
 int guardarMeiosembinario(Meio* inicio)
 {
     FILE* fp;
@@ -42,29 +54,14 @@ int guardarMeiosembinario(Meio* inicio)
         return (0);
 }
 
-Meio* lerMeios()
-{
-    FILE* fp;
-    int cod_m, estado;
-    float bateria, autonomia, preco;
-    char tipo[100], geocodigo[50];
-    Meio* aux = NULL;
 
-    fp = fopen("meios.txt", "r");
-    if (fp != NULL) {
-        while (fscanf(fp, "%d;%99[^;\n];%f;%f;%f;%49[^;\n];%d\n", &cod_m, tipo, &bateria, &autonomia, &preco, geocodigo, &estado) == 7) {
-            aux = inserirMeio(aux, cod_m, tipo, bateria, autonomia, preco, geocodigo, estado);
-        }
-        fclose(fp);
-    } else {
-        printf("Erro ao abrir o arquivo de meios de transporte.\n");
-    }
-
-    return aux;
-}
-
-
-
+/**
+ * @brief 
+ * 
+ * @param inicio 
+ * @param cod 
+ * @return int 
+ */
 int existeMeio(Meio* inicio, int cod)
 {while(inicio!=NULL)
   {if (inicio->cod_m == cod) return(1);
@@ -73,6 +70,20 @@ int existeMeio(Meio* inicio, int cod)
  return(0);
 }
 
+
+/**
+ * @brief 
+ * 
+ * @param inicio 
+ * @param cod_m 
+ * @param tipo 
+ * @param bateria 
+ * @param autonomia 
+ * @param preco 
+ * @param geocodigo 
+ * @param estado 
+ * @return Meio* 
+ */
 Meio* inserirMeio(Meio* inicio, int cod_m, char tipo[], float bateria, float autonomia, float preco, char geocodigo[], int estado)
 {
     if (!existeMeio(inicio, cod_m))
@@ -95,8 +106,36 @@ Meio* inserirMeio(Meio* inicio, int cod_m, char tipo[], float bateria, float aut
 }
 
 
+/**
+ * @brief 
+ * 
+ * @return Meio* 
+ */
+Meio* lerMeios()
+{
+    FILE* fp;
+    int cod_m, estado;
+    float bateria, autonomia, preco;
+    char tipo[100], geocodigo[50];
+    Meio* aux = NULL;
+
+    fp = fopen("meios.txt", "r");
+    if (fp != NULL) {
+        while (fscanf(fp, "%d;%[^;\n];%f;%f;%f;%[^;\n];%d\n", &cod_m, tipo, &bateria, &autonomia, &preco, geocodigo, &estado) == 7) {
+            aux = inserirMeio(aux, cod_m, tipo, bateria, autonomia, preco, geocodigo, estado);
+        }
+        fclose(fp);
+    } 
+
+    return (aux);
+}
 
 
+/**
+ * @brief 
+ * 
+ * @param inicio 
+ */
 void listarMeios(Meio * inicio)
 {while (inicio != NULL)
  {printf("%d;%s;%.2f;%.2f;%.2f;%s;%d\n\n",inicio->cod_m,inicio->tipo, 
@@ -107,7 +146,13 @@ void listarMeios(Meio * inicio)
 
 
 
-
+/**
+ * @brief 
+ * 
+ * @param inicio 
+ * @param cod 
+ * @return Meio* 
+ */
 Meio* removerMeio(Meio* inicio, int cod) 
 {
  Meio *anterior=inicio, *atual=inicio, *aux;
@@ -132,11 +177,16 @@ Meio* removerMeio(Meio* inicio, int cod)
  }
 }
 
+/**
+ * @brief 
+ * 
+ * @param inicio 
+ */
 void listarMeiosPorAutonomia(Meio* inicio) 
 {
     Meio *p, *q;
-    float temp;
-    int flag;
+    float i;
+    int troca;
 
     if (inicio == NULL) {
         printf("A lista esta vazia.\n");
@@ -144,7 +194,7 @@ void listarMeiosPorAutonomia(Meio* inicio)
     }
 
     do {
-        flag = 0;
+        troca = 0;
         p = inicio;
 
         while (p->seguinte != NULL) 
@@ -152,17 +202,17 @@ void listarMeiosPorAutonomia(Meio* inicio)
 
             q = p->seguinte;
 
-            if (p->autonomia < q->autonomia) {
-                
-                temp = p->autonomia;
+            if (p->autonomia < q->autonomia) 
+            {
+               i = p->autonomia;
                 p->autonomia = q->autonomia;
-                q->autonomia = temp;
-                flag = 1;
+                q->autonomia = i;
+                troca = 1;
             }
 
             p = p->seguinte;
         }
-    } while (flag);
+    } while (troca);
    
     printf("Lista de meios por ordem decrescente de autonomia:\n");
     while (inicio != NULL) {
@@ -171,7 +221,11 @@ void listarMeiosPorAutonomia(Meio* inicio)
     }
 }
 
-
+/**
+ * @brief 
+ * 
+ * @param inicio 
+ */
 void procurarMeio(Meio* inicio) 
 {
     char geocod[50];
@@ -197,7 +251,19 @@ void procurarMeio(Meio* inicio)
     printf("Nao foi encontrado nenhum meio com o geocodigo inserido.\n");
     }
 }
-
+/**
+ * @brief 
+ * 
+ * @param inicio 
+ * @param cod 
+ * @param tipo 
+ * @param bateria 
+ * @param autonomia 
+ * @param preco 
+ * @param geocodigo 
+ * @param estado 
+ * @return int 
+ */
 int alterarmeio(Meio* inicio, int cod, char tipo[100], float bateria, float autonomia, float preco, char geocodigo[50], int estado)
 {
     Meio* atual = inicio;
@@ -223,20 +289,24 @@ int alterarmeio(Meio* inicio, int cod, char tipo[100], float bateria, float auto
 }
 
 
-
+/**
+ * @brief 
+ * 
+ * @param inicio 
+ */
 void meiodisponivel(Meio *inicio) 
 {
     Meio *atual = inicio;
     int encontrou_disponivel = 0;
-    printf("Meios de transporte disponíveis:\n");
+    printf("Meios de transporte disponiveis:\n");
     while (atual != NULL) {
         if (atual->estado == 0) {
-            printf("Código: %d | Tipo: %s | Preço por km: %.2f | Bateria: %.2f | Autonomia: %.2f\n", 
-                    atual->cod_m, atual->tipo, atual->preco, atual->bateria, atual->autonomia);
+            printf("Codigo: %d | Tipo: %s | Preco : %.2f | Bateria: %.2f | Autonomia: %.2f | Geocodigo: %s\n", 
+                    atual->cod_m, atual->tipo, atual->preco, atual->bateria, atual->autonomia, atual->geocodigo);
                     }
         atual = atual->seguinte;
     }
 
-}
+    }
 
 

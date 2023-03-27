@@ -1,3 +1,14 @@
+/**
+ * @file meios.h
+ * @author Gonçalo Costa (a26024@alunos.ipca.pt)
+ * @brief 
+ * @version 1.0
+ * @date 2023-03-18
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
+
 #include <stdio.h>
 
 typedef struct meio

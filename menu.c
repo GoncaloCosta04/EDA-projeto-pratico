@@ -2,22 +2,23 @@
 #include <stdlib.h>
 #include "meios.h"
 #include "clientes.h"
-#include "gestores.h"
+#include "gestor.h"
 
 
-
-     int alugarMeio(Cliente* c, Meio* m) 
+int alugarMeio(Cliente* c, Meio* m) 
 {
     int codCliente, codMeio;
-    printf("Introduza o seu  código de cliente: ");
+    printf("Introduza o seu  codigo de cliente: ");
     scanf("%d", &codCliente);
-    printf("Introduza o código do meio que pretende alugar: ");
+    printf("Introduza o codigo do meio que pretende alugar: ");
     scanf("%d", &codMeio);
 
 
     Cliente* clienteAtual = c;
-    while (clienteAtual != NULL) {
-        if (clienteAtual->cod_c == codCliente) {
+    while (clienteAtual != NULL) 
+    {
+        if (clienteAtual->cod_c == codCliente) 
+        {
             break;
         }
         clienteAtual = clienteAtual->seguinte;
@@ -25,42 +26,45 @@
 
 
     Meio* meioAtual = m;
-    while (meioAtual != NULL) {
-        if (meioAtual->cod_m == codMeio) {
+    while (meioAtual != NULL) 
+    {
+        if (meioAtual->cod_m == codMeio) 
+        {
             break;
         }
         meioAtual = meioAtual->seguinte;
     }
 
 
-    if (clienteAtual == NULL || meioAtual == NULL) {
-        printf("Erro: Código de cliente ou meio inválido!\n");
+    if (clienteAtual == NULL || meioAtual == NULL) 
+    {
+        printf("Erro: Codigo de cliente ou meio invalido!\n");
         return 0;
     }
 
 
-    if (meioAtual->estado == 1) {
-        printf("Erro: O meio de código %d já foi alugado!\n", meioAtual->cod_m);
+    if (meioAtual->estado == 1) 
+    {
+        printf("Meio ja alugado!\n");
         return 0;
     }
 
 
     if (clienteAtual->saldo < meioAtual->preco) 
     {
-        printf("Erro: Saldo insuficiente!\n");
+        printf("Saldo insuficiente!\n");
         return 0;
     }
 
 
     meioAtual->estado = 1;
     clienteAtual->saldo -= meioAtual->preco;
-    printf("Meio de código %d alugado com sucesso para %s!\n", meioAtual->cod_m, clienteAtual->nome);
-     FILE *fp;
-    fp = fopen("alugar.txt", "a");
-    fprintf(fp, "Aluguer realizado com sucesso!\n");
-    fprintf(fp, "Cliente: %s, Código: %d, NIF: %d, Saldo: %.2f\n", clienteAtual->nome, clienteAtual->cod_c, clienteAtual->NIF, clienteAtual->saldo);
-    fprintf(fp, "Meio: %s, Código: %d, Tipo: %s, Bateria: %.2f, Autonomia: %.2f, Preço: %.2f, Geocódigo: %s\n", meioAtual->tipo, meioAtual->cod_m, meioAtual->tipo, meioAtual->bateria, meioAtual->autonomia, meioAtual->preco, meioAtual->geocodigo);
-    fprintf(fp, "----------------------------\n");
+    printf("Meio de codigo %d alugado com sucesso para %s!\n", meioAtual->cod_m, clienteAtual->nome);
+    FILE *fp;
+    fp = fopen("alugar.txt", "w");
+    fprintf(fp, "Cliente: %s, Codigo: %d, NIF: %d\n", clienteAtual->nome, clienteAtual->cod_c, clienteAtual->NIF);
+    fprintf(fp, "Meio: %s, Codigo: %d, Tipo: %s, Bateria: %.2f, Autonomia: %.2f, Preço: %.2f, Geocodigo: %s\n", meioAtual->tipo, meioAtual->cod_m, meioAtual->tipo, meioAtual->bateria, meioAtual->autonomia, meioAtual->preco, meioAtual->geocodigo);
+    fprintf(fp, "--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
     fclose(fp);
     return 1;
 
@@ -74,13 +78,13 @@ void registoaluger()
 
     fp = fopen("alugar.txt", "r");
 
-    if (fp == NULL) {
-        printf("Erro ao abrir o arquivo.\n");
+    if (fp == NULL)
+     {
+        printf("Erro ao abrir o ficheiro.\n");
         return;
     }
 
-    printf("Conteúdo do arquivo alugar.txt:\n");
-
+    
     while (fgets(linha, 100, fp) != NULL) {
         printf("%s", linha);
     }
@@ -88,10 +92,8 @@ void registoaluger()
     fclose(fp);
 }
 
-int main() {
- 
-
-
+int main() 
+{
 Meio* meios = NULL; // Lista ligada vazia 
 int op;
 int cod_m;
@@ -115,16 +117,15 @@ int password;
 int contacto;
 char username[100];
 
-float valorapagar;
-int codm;
-int numkms;
+
 float valor;
 int cod;
 
-    int opcao;
-    int opcaocliente;
-    int opcaogestor;
-    do {
+int opcao;
+int opcaocliente;
+int opcaogestor;
+    do 
+    {
         printf("===== MENU PRINCIPAL =====\n");
         printf("1 - Registar Cliente\n");
         printf("2 - Menu Cliente\n");
@@ -135,85 +136,96 @@ int cod;
         printf("Escolha uma opcao: ");
         scanf("%d", &opcao);
         system("cls");
-        switch (opcao) {
+        switch (opcao) 
+        {
             case 1:
-       printf("Codigo?\n");
-	   scanf("%d",&cod_c);
-	   scanf("%*c"); 
-	   printf("Nome\n");
-	   scanf("%[^\n]s",nome);
-	  printf("NIF?\n");
-	   scanf("%d",&NIF);
-	   printf("Saldo\n");
-	   scanf("%f",&saldo);
-	   scanf("%*c"); 
-       printf("Morada\n");
-       scanf("%[^\n]s",morada);
-	   clientes = inserirCliente(clientes,  cod_c,  nome,  NIF,  saldo,  morada);
+printf("Codigo?\n");
+scanf("%d",&cod_c);
+scanf("%*c"); 
+printf("Nome\n");
+scanf("%[^\n]s",nome);
+printf("NIF?\n");
+scanf("%d",&NIF);
+printf("Saldo\n");
+scanf("%f",&saldo);
+scanf("%*c"); 
+printf("Morada\n");
+scanf("%[^\n]s",morada);
+clientes = inserirCliente(clientes,  cod_c,  nome,  NIF,  saldo,  morada);
                 break;
             case 2:
-                do {
-                    printf("===== MENU CLIENTE =====\n");
-                    printf("1 - Alterar seus dados\n");
-                    printf("2 - Ver meios\n");
-                    printf("3 - Ver meios por autonomia\n");
-                    printf("4 - Requisitar aluger\n");
-                    printf("5 - Procurar meio por geocodigo\n");
-                    printf("6 - Ajuda de Gestores\n");
-                    printf("7 - Apagar conta\n");
-                    printf("0 - Sair\n");
-                    printf("Escolha uma opcao: ");
-                    scanf("%d", &opcaocliente);
-                    system("cls");
-                    switch (opcaocliente) {
-                        case 1:
-                            {
+    do 
+    {
+            printf("===== MENU CLIENTE =====\n");
+            printf("1 - Alterar seus dados\n");
+            printf("2 - Ver meios\n");
+            printf("3 - Ver meios por autonomia\n");
+            printf("4 - Recarregar saldo\n");
+            printf("5 - Requisitar aluger\n");
+            printf("6 - Procurar meio por geocodigo\n");
+            printf("7 - Ajuda de Gestores\n");
+            printf("8 - Apagar conta\n");
+            printf("0 - Sair\n");
+            printf("Escolha uma opcao: ");
+            scanf("%d", &opcaocliente);
+            system("cls");
+            switch (opcaocliente) 
+            {
+            case 1:
+            {
 int cod_c;
 int nif;
 char nova_morada[250];
-printf("Introduza o codigo do cliente que deseja alterar: ");
+printf("Introduza o codigo de cliente: ");
 scanf("%d", &cod_c);
-printf("Introduza o NIF do cliente que deseja alterar: ");
+printf("Introduza o NIF: ");
 scanf("%d", &nif);
 printf("Introduza a nova morada\n");
 scanf("%s",nova_morada);
 int sucesso = alterarcliente(clientes,  cod_c,  nif, nova_morada);
   if (sucesso)
     {
-        printf("Dados do cliente alterados com sucesso.\n");
+        printf("Dados do alterados com sucesso.\n");
     }
     else
     {
-        printf("Nao foi possivel alterar os dados do cliente.\n");
+        printf("Nao foi possivel alterar os dados.\n");
     }
 }
-                            break;
-                        case 2:
-                            listarMeios(meios);
-                            break;
-                        case 3:
-                            listarMeiosPorAutonomia(meios); 
-                            break;
-                        case 4:
-                            meiodisponivel(meios); 
-                            alugarMeio(clientes, meios);
-                            break;
-                        case 5:
-                           procurarMeio(meios); 
-                            break;
-                        case 6:
-                            listarGestor(gestores);
-                            break;
-                        case 7:
-                            printf("Codigo do cliente a remover?\n");
-                            scanf("%d",&cod);
-                            clientes = removerCliente(clientes, cod);
-                            break;
-                        case 0:
-                            printf("Voltando ao menu principal...\n");
-                            break;
-                        default:
-                            printf("Opcao invalida! Tente novamente.\n");
+break;
+            case 2:
+            listarMeios(meios);
+            break;
+            case 3:
+            listarMeiosPorAutonomia(meios); 
+            break;
+            case 4:
+            printf("Introduza o codigo\n");
+            scanf("%d", &cod);
+            printf("Introduza o valor\n");
+            scanf("%f",&valor);
+            clientes = carregarsaldo(clientes, cod, valor);
+            break;
+            case 5:
+            meiodisponivel(meios); 
+            alugarMeio(clientes, meios);
+            break;
+            case 6:
+            procurarMeio(meios); 
+            break;
+            case 7:
+            listarGestor(gestores);
+            break;
+            case 8:
+            printf("Codigo do cliente a remover?\n");
+            scanf("%d",&cod);
+            clientes = removerCliente(clientes, cod);
+            break;
+            case 0:
+            printf("Regresso ao menu principal...\n");
+            break;
+            default:
+            printf("Opcao invalida! Tente novamente.\n");
                     }
                 } while (opcaocliente != 0);
                 break;
@@ -242,7 +254,7 @@ int sucesso = alterarcliente(clientes,  cod_c,  nif, nova_morada);
                     printf("8 - Alterar os seus dados de gestor\n");
                     printf("9 - Adicionar meio\n");
                     printf("10 - Adicionar cliente\n");
-                    printf("11 - Guardar informação\n");
+                    printf("11 - Guardar informacao\n");
                     printf("12 - Registo de aluguel\n");
                     printf("0 - Sair\n");
                     printf("Escolha uma opcao: ");
@@ -323,9 +335,9 @@ int sucesso = alterarcliente(clientes,  cod_c,  nif, nova_morada);
                                 int pass;
                                 char novousername[100];
                                 int novapassword;
-                                printf("Digite o codigo do gestor que deseja alterar: ");
+                                printf("Introduza o codigo de gestor: ");
                                 scanf("%d", &cod);
-                                printf("Digite o NIF do gestor que deseja alterar: ");
+                                printf("Introduza a password : ");
                                 scanf("%d", &pass);
                                 printf("Digite os novos dados do meio:\n");
                                 printf("Username\n");
@@ -335,11 +347,11 @@ int sucesso = alterarcliente(clientes,  cod_c,  nif, nova_morada);
                                 int sucesso = alterargestor(gestores,  cod,  pass, novousername, novapassword);
                                 if (sucesso)
                                     {
-                                        printf("Dados do cliente alterados com sucesso.\n");
+                                        printf("Dados  alterados com sucesso.\n");
                                     }
                                     else
                                     {
-                                        printf("Nao foi possivel alterar os dados do cliente.\n");
+                                        printf("Nao foi possivel alterar os dados.\n");
                                     }
                                 }
                         break;
@@ -386,13 +398,16 @@ int sucesso = alterarcliente(clientes,  cod_c,  nif, nova_morada);
                         guardarMeios(meios);
                         guardarCliente(clientes);
                         guardarGestor(gestores);
+                        guardarMeiosembinario(meios);
+                        guardarGestorembinario(gestores);
+                        guardarClientebinario(clientes);
                         break;
                           
                         case 12:
                         registoaluger();
                         break;
                         case 0:
-                        printf("Voltando ao menu principal...\n");
+                        printf("Regresso ao menu principal...\n");
                         break;
                      }
                 }while (opcaogestor != 0);

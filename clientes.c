@@ -3,7 +3,12 @@
 #include <stdio.h>
 #include "clientes.h"
 
-
+/**
+ * @brief 
+ * 
+ * @param inicio 
+ * @return int 
+ */
 int guardarCliente(Cliente* inicio)
 {FILE* fp;
  fp = fopen("clientes.txt","w");
@@ -21,7 +26,12 @@ int guardarCliente(Cliente* inicio)
  }
  else return(0);
 }
-
+/**
+ * @brief 
+ * 
+ * @param inicio 
+ * @return int 
+ */
 int guardarClientebinario(Cliente* inicio)
 {
     FILE* fp;
@@ -40,7 +50,11 @@ int guardarClientebinario(Cliente* inicio)
     else 
         return (0);
 }
-
+/**
+ * @brief 
+ * 
+ * @return Cliente* 
+ */
 Cliente* lerCliente()
 {FILE* fp;
  int cod_c; 
@@ -59,6 +73,13 @@ char morada[1000];
  }
  return(aux);
 }
+/**
+ * @brief 
+ * 
+ * @param inicio 
+ * @param cod 
+ * @return int 
+ */
 int existeCliente(Cliente* inicio, int cod)
 {while(inicio!=NULL)
   {if (inicio->cod_c == cod) return(1);
@@ -66,7 +87,17 @@ int existeCliente(Cliente* inicio, int cod)
   }
  return(0);
 }
-
+/**
+ * @brief 
+ * 
+ * @param inicio 
+ * @param cod_c 
+ * @param nome 
+ * @param NIF 
+ * @param saldo 
+ * @param morada 
+ * @return Cliente* 
+ */
 Cliente* inserirCliente(Cliente* inicio, int cod_c, char nome[], int NIF, float saldo, char morada[])
 {
     if (!existeCliente(inicio, cod_c))
@@ -85,7 +116,11 @@ Cliente* inserirCliente(Cliente* inicio, int cod_c, char nome[], int NIF, float 
     }
     return inicio; 
 }
-
+/**
+ * @brief 
+ * 
+ * @param inicio 
+ */
 void listarClientes(Cliente * inicio)
 {while (inicio != NULL)
  {printf("%d;%s;%d;%.2f;%s\n\n",inicio->cod_c,inicio->nome, 
@@ -95,7 +130,13 @@ void listarClientes(Cliente * inicio)
 }
 
 
-
+/**
+ * @brief 
+ * 
+ * @param inicio 
+ * @param cod 
+ * @return Cliente* 
+ */
 Cliente* removerCliente(Cliente* inicio, int cod) 
 {
  Cliente *anterior=inicio, *atual=inicio, *aux;
@@ -120,9 +161,18 @@ Cliente* removerCliente(Cliente* inicio, int cod)
  }
 }
 
-
+/**
+ * @brief 
+ * 
+ * @param inicio 
+ * @param cod_c 
+ * @param nif 
+ * @param nova_morada 
+ * @return int 
+ */
 int alterarcliente(Cliente *inicio, int cod_c, int nif, char nova_morada[250]) 
 {
+    
     Cliente * atual = inicio;
     while (atual != NULL) 
     {
@@ -138,8 +188,15 @@ int alterarcliente(Cliente *inicio, int cod_c, int nif, char nova_morada[250])
     return 0;
 }
 
-
-Cliente* carregar_saldo(Cliente *inicio, int cod, float valor) 
+/**
+ * @brief 
+ * 
+ * @param inicio 
+ * @param cod 
+ * @param valor 
+ * @return Cliente* 
+ */
+Cliente* carregarsaldo(Cliente *inicio, int cod, float valor) 
 {
     Cliente *cliente = inicio;
     while (cliente != NULL) 
@@ -147,7 +204,7 @@ Cliente* carregar_saldo(Cliente *inicio, int cod, float valor)
         if (cliente->cod_c == cod ) 
         {
             cliente->saldo += valor;
-            printf("Saldo atualizado com sucesso! Novo saldo: %.2f\n", cliente->saldo);
+            printf("Saldo atualizado com sucesso!\n Novo saldo: %.2f\n", cliente->saldo);
             return cliente;
         }
         cliente = cliente->seguinte;
