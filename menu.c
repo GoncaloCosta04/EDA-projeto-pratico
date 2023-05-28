@@ -1,8 +1,17 @@
-#include <stdio.h>
+ #include <stdio.h>
 #include <stdlib.h>
-#include "meios.h"
-#include "clientes.h"
-#include "gestor.h"
+#include <string.h>
+#include <limits.h>
+#include "grafo.h"
+
+
+
+
+
+
+
+
+
 
 
 int alugarMeio(Cliente* c, Meio* m) 
@@ -17,7 +26,7 @@ int alugarMeio(Cliente* c, Meio* m)
     Cliente* clienteAtual = c;
     while (clienteAtual != NULL) 
     {
-        if (clienteAtual->cod_c == codCliente) 
+        if (clienteAtual->codc == codCliente) 
         {
             break;
         }
@@ -28,7 +37,7 @@ int alugarMeio(Cliente* c, Meio* m)
     Meio* meioAtual = m;
     while (meioAtual != NULL) 
     {
-        if (meioAtual->cod_m == codMeio) 
+        if (meioAtual->codm == codMeio) 
         {
             break;
         }
@@ -59,11 +68,11 @@ int alugarMeio(Cliente* c, Meio* m)
 
     meioAtual->estado = 1;
     clienteAtual->saldo -= meioAtual->preco;
-    printf("Meio de codigo %d alugado com sucesso para %s!\n", meioAtual->cod_m, clienteAtual->nome);
-    FILE *fp;
-    fp = fopen("alugar.txt", "w");
-    fprintf(fp, "Cliente: %s, Codigo: %d, NIF: %d\n", clienteAtual->nome, clienteAtual->cod_c, clienteAtual->NIF);
-    fprintf(fp, "Meio: %s, Codigo: %d, Tipo: %s, Bateria: %.2f, Autonomia: %.2f, Preço: %.2f, Geocodigo: %s\n", meioAtual->tipo, meioAtual->cod_m, meioAtual->tipo, meioAtual->bateria, meioAtual->autonomia, meioAtual->preco, meioAtual->geocodigo);
+    printf("Meio de código %d alugado com sucesso para %s!\n", meioAtual->codm, clienteAtual->nome);
+     FILE *fp;
+    fp = fopen("alugar.txt", "a");
+    fprintf(fp, "Cliente: %s, Codigo: %d, NIF: %d\n", clienteAtual->nome, clienteAtual->codc, clienteAtual->NIF);
+    fprintf(fp, "Meio: %s, Codigo: %d, Tipo: %s, Bateria: %.2f, Autonomia: %.2f, Preço: %.2f, Geocodigo: %s\n", meioAtual->tipo, meioAtual->codm, meioAtual->tipo, meioAtual->bateria, meioAtual->autonomia, meioAtual->preco, meioAtual->geocodigo);
     fprintf(fp, "--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
     fclose(fp);
     return 1;
@@ -78,13 +87,13 @@ void registoaluger()
 
     fp = fopen("alugar.txt", "r");
 
-    if (fp == NULL)
-     {
+    if (fp == NULL) {
         printf("Erro ao abrir o ficheiro.\n");
         return;
     }
 
-    
+    printf("Sucesso\n");
+
     while (fgets(linha, 100, fp) != NULL) {
         printf("%s", linha);
     }
@@ -92,97 +101,105 @@ void registoaluger()
     fclose(fp);
 }
 
-int main() 
+int main()
 {
-Meio* meios = NULL; // Lista ligada vazia 
-int op;
-int cod_m;
-char tipo[100];
-float bateria;
-float autonomia;
-float preco;
-char geocodigo[50];
-int estado;
+    Meio* meios = NULL; // Lista ligada vazia
+    //int op;
+    int codm;
+    char tipo[100];
+    float bateria;
+    float autonomia;
+    float preco;
+    char geocodigo[250];
+    int estado;
+    int espaco;
 
-Cliente* clientes = NULL; //Lista ligada vazia
-int cod_c; 
-char nome[100];
-int NIF; 
-float saldo; 
-char morada[250]; 
+    Cliente* clientes = NULL; //Lista ligada vazia
+    int codc;
+    char nome[100];
+    int NIF;
+    float saldo;
+    char morada[250];
+    char geocodigoc[250];
 
-Gestor* gestores = NULL; //Lista ligada vazia
-int cod_g;
-int password;
-int contacto;
-char username[100];
+    Gestor* gestores = NULL;
+    int codg;
+    int password;
+    int contacto;
+    char username[100];
+    float valor;
+    int cod;
+
+   Grafo grafo = NULL;
 
 
-float valor;
-int cod;
-
-int opcao;
-int opcaocliente;
-int opcaogestor;
-    do 
+    int opcao;
+    int opcaocliente;
+    int opcaogestor;
+    int opcaografo;
+    do
     {
         printf("===== MENU PRINCIPAL =====\n");
         printf("1 - Registar Cliente\n");
         printf("2 - Menu Cliente\n");
         printf("3 - Registar Gestor\n");
         printf("4 - Menu Gestor\n");
-        printf("5 - Carregar Dados\n");
+        printf("5 - Menu Grafo\n");
+        printf("6 - Carregar Dados\n");
         printf("0 - Sair\n");
         printf("Escolha uma opcao: ");
         scanf("%d", &opcao);
         system("cls");
-        switch (opcao) 
+        switch (opcao)
         {
             case 1:
-printf("Codigo?\n");
-scanf("%d",&cod_c);
-scanf("%*c"); 
-printf("Nome\n");
-scanf("%[^\n]s",nome);
-printf("NIF?\n");
-scanf("%d",&NIF);
-printf("Saldo\n");
-scanf("%f",&saldo);
-scanf("%*c"); 
-printf("Morada\n");
-scanf("%[^\n]s",morada);
-clientes = inserirCliente(clientes,  cod_c,  nome,  NIF,  saldo,  morada);
+                printf("Codigo?\n");
+                scanf("%d", &codc);
+                scanf("%*c");
+                printf("Nome\n");
+                scanf(" %[^\n]s", nome);
+                printf("NIF?\n");
+                scanf("%d", &NIF);
+                printf("Saldo\n");
+                scanf("%f", &saldo);
+                scanf("%*c");
+                printf("Morada\n");
+                scanf(" %[^\n]s", morada);
+                scanf("%*c");
+                printf("Geocodigo\n");
+                scanf("%[^\n]s", geocodigoc);
+                clientes = inserirCliente(clientes, codc, nome, NIF, saldo, morada, geocodigoc);
                 break;
             case 2:
-    do 
-    {
-            printf("===== MENU CLIENTE =====\n");
-            printf("1 - Alterar seus dados\n");
-            printf("2 - Ver meios\n");
-            printf("3 - Ver meios por autonomia\n");
-            printf("4 - Recarregar saldo\n");
-            printf("5 - Requisitar aluger\n");
-            printf("6 - Procurar meio por geocodigo\n");
-            printf("7 - Ajuda de Gestores\n");
-            printf("8 - Apagar conta\n");
-            printf("0 - Sair\n");
-            printf("Escolha uma opcao: ");
-            scanf("%d", &opcaocliente);
-            system("cls");
-            switch (opcaocliente) 
+                do
+                {
+                    printf("===== MENU CLIENTE =====\n");
+                    printf("1 - Alterar seus dados\n");
+                    printf("2 - Ver meios\n");
+                    printf("3 - Ver meios por autonomia\n");
+                    printf("4 - Recarregar saldo\n");
+                    printf("5 - Requisitar aluguel\n");
+                    printf("6 - Procurar meio por geocodigo\n");
+                    printf("7 - Ajuda de Gestores\n");
+                    printf("8 - Apagar conta\n");
+                    printf("0 - Sair\n");
+                    printf("Escolha uma opcao: ");
+                    scanf("%d", &opcaocliente);
+                    system("cls");
+                    switch (opcaocliente)
+                    {
+                            case 1:
             {
-            case 1:
-            {
-int cod_c;
+int codc;
 int nif;
 char nova_morada[250];
 printf("Introduza o codigo de cliente: ");
-scanf("%d", &cod_c);
+scanf("%d", &codc);
 printf("Introduza o NIF: ");
 scanf("%d", &nif);
 printf("Introduza a nova morada\n");
 scanf("%s",nova_morada);
-int sucesso = alterarcliente(clientes,  cod_c,  nif, nova_morada);
+int sucesso = alterarcliente(clientes,  codc,  nif, nova_morada);
   if (sucesso)
     {
         printf("Dados do alterados com sucesso.\n");
@@ -193,45 +210,45 @@ int sucesso = alterarcliente(clientes,  cod_c,  nif, nova_morada);
     }
 }
 break;
-            case 2:
-            listarMeios(meios);
-            break;
-            case 3:
-            listarMeiosPorAutonomia(meios); 
-            break;
-            case 4:
+                        case 2:
+                            listarMeios(meios);
+                            break;
+                        case 3:
+                            listarMeiosPorAutonomia(meios);
+                            break;
+                        case 4:
             printf("Introduza o codigo\n");
             scanf("%d", &cod);
             printf("Introduza o valor\n");
             scanf("%f",&valor);
             clientes = carregarsaldo(clientes, cod, valor);
             break;
-            case 5:
+                         case 5:
             meiodisponivel(meios); 
             alugarMeio(clientes, meios);
             break;
-            case 6:
+                         case 6:
             procurarMeio(meios); 
             break;
             case 7:
-            listarGestor(gestores);
+            contactarGestor(gestores);
             break;
-            case 8:
+                       case 8:
             printf("Codigo do cliente a remover?\n");
             scanf("%d",&cod);
             clientes = removerCliente(clientes, cod);
             break;
-            case 0:
-            printf("Regresso ao menu principal...\n");
-            break;
-            default:
-            printf("Opcao invalida! Tente novamente.\n");
+                        case 0:
+                            break;
+                        default:
+                            printf("Opcao Invalida!\n");
+                            break;
                     }
                 } while (opcaocliente != 0);
                 break;
-            case 3:
+                    case 3:
   printf("Codigo?\n");
-  scanf("%d",&cod_g);
+  scanf("%d",&codg);
   printf("Password\n");
   scanf("%d",&password);
   printf("Contacto\n");
@@ -239,7 +256,7 @@ break;
   scanf("%*c");
   printf("Username\n");
  scanf("%[^\n]s",username);
- gestores = inserirGestor(gestores, cod_g, password, contacto, username); 
+ gestores = inserirGestor(gestores, codg, password, contacto, username); 
                 break;
             case 4:
                 do {
@@ -299,7 +316,7 @@ break;
                                 float bateria, autonomia, preco;
                                 char geocodigo[50];
                                 int estado;
-                                
+                                int espaco;
                                 printf("Introduza o codigo do meio que deseja alterar: ");
                                 scanf("%d", &cod);
                                 
@@ -316,8 +333,12 @@ break;
                                 scanf("%s", geocodigo);
                                 printf("Estado: ");
                                 scanf("%d", &estado);
+                                printf("Estado: ");
+                                scanf("%d", &estado);
+                                printf("Espaco: ");
+                                scanf("%d", &espaco);
                                 
-                                int sucesso = alterarmeio(meios, cod, tipo, bateria, autonomia, preco, geocodigo, estado);
+                                int sucesso = alterarmeio(meios, cod, tipo, bateria, autonomia, preco, geocodigo, estado, espaco);
                                 if (sucesso)
                                 {
                                     printf("Dados do meio alterados com sucesso.\n");
@@ -358,7 +379,7 @@ break;
 
                         case 9:
                     printf("Codigo?\n");
-                    scanf("%d",&cod_m);
+                    scanf("%d",&codm);
                     scanf("%*c"); 
                     printf("Tipo\n");
                     scanf("%[^\n]s",tipo);
@@ -374,13 +395,15 @@ break;
                     printf("%s\n", geocodigo);
                     printf("Estado(0-livre/1-ocupado)?\n");
                     scanf("%d",&estado);
+                    printf("Espaco?\n");
+                    scanf("%d",&espaco);
                     system("cls");
-                        meios = inserirMeio(meios,cod_m,tipo,bateria,autonomia, preco, geocodigo, estado);
+                        meios = inserirMeio(meios,codm,tipo,bateria,autonomia, preco, geocodigo, estado, espaco);
                         break;
 
                         case 10:
                     printf("Codigo?\n");
-	                scanf("%d",&cod_c);
+	                scanf("%d",&codc);
                     scanf("%*c"); 
                     printf("Nome\n");
                     scanf("%[^\n]s",nome);
@@ -391,16 +414,16 @@ break;
                     scanf("%*c"); 
                     printf("Morada\n");
                     scanf("%[^\n]s",morada);
-                    clientes = inserirCliente(clientes,  cod_c,  nome,  NIF,  saldo,  morada);
+                    printf("Geocodigo\n");
+                    scanf("%[^\n]s",geocodigoc);
+                    printf("%s\n", geocodigoc);
+                    clientes = inserirCliente(clientes,  codc,  nome,  NIF,  saldo,  morada, geocodigoc);
                         break;
 
                         case 11:
                         guardarMeios(meios);
                         guardarCliente(clientes);
                         guardarGestor(gestores);
-                        guardarMeiosembinario(meios);
-                        guardarGestorembinario(gestores);
-                        guardarClientebinario(clientes);
                         break;
                           
                         case 12:
@@ -412,7 +435,103 @@ break;
                      }
                 }while (opcaogestor != 0);
                 break;
-                case 5:
+            case 5:
+              
+    do
+    {
+        printf("\n--- Menu Grafo ---\n");
+        printf("1. Criar vértice\n");
+        printf("2. Criar aresta\n");
+        printf("3. Inserir meio no grafo\n");
+        printf("4. Inserir cliente no grafo\n");
+        printf("5. Guardar em txt\n");
+        printf("6. Guardar em binário\n");
+        printf("7. Ler informação\n");
+        printf("8. Listar meios de transporte do grafo\n");
+        printf("9. Listar clientes do grafo\n");
+        printf("10. Procurar meio por raio\n");
+        printf("11. Meios a recolher\n");
+        printf("12. Caixeiro viajante\n");
+        printf("0. Sair\n");
+        printf("\nEscolha uma opção: ");
+        scanf("%d", &opcaografo);
+
+        switch (opcaografo)
+        {
+            case 1:
+    criarVertice(&grafo, "Braga");
+    criarVertice(&grafo, "Porto");
+    criarVertice(&grafo, "Aveiro");
+    criarVertice(&grafo, "Coimbra");
+    criarVertice(&grafo, "Lisboa");
+    criarVertice(&grafo, "Faro");
+                break;
+            case 2:
+    criarAresta(grafo, "Braga", "Porto", 50.0);
+    criarAresta(grafo, "Braga", "Aveiro", 120.0);
+    criarAresta(grafo, "Aveiro", "Porto", 350.0);
+    criarAresta(grafo, "Porto", "Aveiro", 70.0);
+    criarAresta(grafo, "Porto", "Lisboa", 70.0);
+               break;
+            case 3:
+    inserirMeioNoGrafo(grafo, "Lisboa", 1, "Carro", 12.0, 200.0, 10.0, 1, 5.0);
+    inserirMeioNoGrafo(grafo, "Lisboa", 11, "Carro", 12.0, 200.0, 10.0, 0, 5.0);
+    inserirMeioNoGrafo(grafo, "Porto", 2, "Bicicleta", 0.0, 50.0, 5.0, 0, 2.0);
+    inserirMeioNoGrafo(grafo, "Coimbra", 3, "Moto", 80.0, 150.0, 8.0, 1, 3.0);
+    inserirMeioNoGrafo(grafo, "Faro", 4, "Carro", 90.0, 180.0, 9.0, 1, 4.0);
+                break;
+            case 4:
+    inserirClienteNoGrafo(grafo, "Lisboa", 1, "João", 123456789, 100.0, "Rua A");
+    inserirClienteNoGrafo(grafo, "Porto", 2, "Maria", 987654321, 50.0, "Rua B");
+    inserirClienteNoGrafo(grafo, "Coimbra", 3, "Pedro", 246813579, 200.0, "Rua C");
+    inserirClienteNoGrafo(grafo, "Faro", 4, "Ana", 135792468, 150.0, "Rua D");
+            break;
+            case 5:
+    saveVertices(grafo);
+    saveArestas(grafo);
+    saveMeios(grafo);
+    saveClientes(grafo);
+  
+                break;
+            case 6:
+    saveVerticesbin(grafo);
+    saveArestasbin(grafo);  
+    saveMeiosbin(grafo);
+    saveClientesbin(grafo);
+                break;
+            case 7:
+    readVertices(&grafo);
+    readArestas(&grafo);
+    readMeios(&grafo);
+    readClientes(&grafo);
+                break;
+            case 8:
+    listarMeiosGrafo(grafo, "Coimbra");
+    listarMeiosGrafo(grafo, "Lisboa");
+                break;
+            case 9:
+    listarClientesGrafo(grafo, "Porto");
+                break;
+            case 10:
+    char geocode[] = "Aveiro";
+    char type[] = "Carro";
+    float radius = 500.0;
+    listVehiclesPerRadius(grafo, geocode, type, radius);
+                break;
+            case 11:
+apresentarMeiosEstadoBateria(grafo);
+            break;
+                case 12:
+findShortestPaths(grafo, "Porto");
+    break;
+
+            case 0:
+                printf("Regresso ao menu principal...\n");
+                break;
+        }
+    } while (opcaografo != 0);
+    break;
+    case 6:
                 printf("A carregar dados...\n");
             gestores = lerGestor(gestores);
             meios = lerMeios(meios); 
@@ -428,3 +547,4 @@ break;
     }while (opcao!=0);
 return 0; 
 }
+
