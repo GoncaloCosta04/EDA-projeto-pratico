@@ -1,13 +1,32 @@
+/**
+ * @file grafo.c
+ * @author Gonçalo (a26024@alunos.ipca.pt)
+ * @brief 
+ * @version 0.1
+ * @date 2023-05-28
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
+
+
+
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <limits.h>
 #include "grafo.h"
 
-
+/**
+ * @brief 
+ * 
+ * @param g 
+ * @param novoId 
+ * @return int 
+ */
 int criarVertice(Grafo *g, char novoId[]) {
     if ( g== NULL) {
-        return 0; // Verifica se o ponteiro g é nulo
+        return 0; 
     }
 
     Grafo novo = malloc(sizeof(struct registo1));
@@ -26,7 +45,13 @@ int criarVertice(Grafo *g, char novoId[]) {
 
 
 
-
+/**
+ * @brief 
+ * 
+ * @param g 
+ * @param vertice 
+ * @return int 
+ */
 
 int existeVertice(Grafo g, char vertice[]) {
     while (g != NULL) {
@@ -39,7 +64,11 @@ int existeVertice(Grafo g, char vertice[]) {
 
 
 
-
+/**
+ * @brief 
+ * 
+ * @param g 
+ */
 void saveVertices(Grafo g) {
     FILE* fp;
     fp = fopen("vertices.txt", "w");
@@ -59,6 +88,12 @@ void saveVertices(Grafo g) {
     }
 }
 
+
+/**
+ * @brief 
+ * 
+ * @param g 
+ */
 void saveVerticesbin(Grafo g) {
     FILE* fp;
     fp = fopen("vertices.bin", "wb");
@@ -80,7 +115,11 @@ void saveVerticesbin(Grafo g) {
 
 
 
-
+/**
+ * @brief 
+ * 
+ * @param g 
+ */
 void readVertices(Grafo* g) {
     FILE* fp = fopen("vertices.txt", "r");
 
@@ -101,7 +140,15 @@ void readVertices(Grafo* g) {
 }
 
 
-
+/**
+ * @brief 
+ * 
+ * @param g 
+ * @param vOrigem 
+ * @param vDestino 
+ * @param peso 
+ * @return int 
+ */
 int criarAresta(Grafo g, char vOrigem[], char vDestino[], float peso) {
     if (existeVertice(g, vOrigem) && existeVertice(g, vDestino)) {
         Grafo origem = g;
@@ -126,7 +173,11 @@ int criarAresta(Grafo g, char vOrigem[], char vDestino[], float peso) {
     }
 }
 
-
+/**
+ * @brief 
+ * 
+ * @param g 
+ */
 void saveArestas(Grafo g) {
     FILE* fp;
     fp = fopen("arestas.txt", "w");
@@ -154,7 +205,11 @@ void saveArestas(Grafo g) {
 
 
 
-
+/**
+ * @brief 
+ * 
+ * @param g 
+ */
 void saveArestasbin(Grafo g) {
     FILE* fp;
     fp = fopen("arestas.bin", "wb");
@@ -180,7 +235,11 @@ void saveArestasbin(Grafo g) {
     }
 }
 
-
+/**
+ * @brief 
+ * 
+ * @param g 
+ */
 void readArestas(Grafo* g) {
     FILE* fp = fopen("arestas.txt", "r");
 
@@ -200,7 +259,20 @@ void readArestas(Grafo* g) {
 }
 
 
-
+/**
+ * @brief 
+ * 
+ * @param g 
+ * @param geocodigo 
+ * @param codigom 
+ * @param tipo 
+ * @param bateriam 
+ * @param autonomia 
+ * @param preco 
+ * @param estado 
+ * @param espacom 
+ * @return int 
+ */
 int inserirMeioNoGrafo(Grafo g, char geocodigo[], int codigom, char tipo[], float bateriam, float autonomia, float preco, int estado, float espacom) {
     while (g != NULL && strcmp(g->vertice, geocodigo) != 0) {
         g = g->seguinte;
@@ -226,10 +298,14 @@ int inserirMeioNoGrafo(Grafo g, char geocodigo[], int codigom, char tipo[], floa
  
 
 
-
+/**
+ * @brief 
+ * 
+ * @param g 
+ */
 void saveMeios(Grafo g) {
     FILE* fp;
-    fp = fopen("meios.txt", "w");
+    fp = fopen("meiosg.txt", "w");
 
     if (fp != NULL) {
         Grafo vertice = g;
@@ -252,10 +328,14 @@ void saveMeios(Grafo g) {
 }
 
 
-
+/**
+ * @brief 
+ * 
+ * @param g 
+ */
 void saveMeiosbin(Grafo g) {
     FILE* fp;
-    fp = fopen("meios.bin", "wb");
+    fp = fopen("meiosg.bin", "wb");
 
     if (fp != NULL) {
         Grafo vertice = g;
@@ -277,8 +357,15 @@ void saveMeiosbin(Grafo g) {
     }
 }
 
+
+
+/**
+ * @brief 
+ * 
+ * @param g 
+ */
 void readMeios(Grafo* g) {
-    FILE* fp = fopen("meios.txt", "r");
+    FILE* fp = fopen("meiosg.txt", "r");
 
     if (fp != NULL) {
         char vVertice[250], vTipo[100];
@@ -299,14 +386,25 @@ void readMeios(Grafo* g) {
 
 
 
-
+/**
+ * @brief 
+ * 
+ * @param g 
+ * @param geocodigo 
+ * @param codigoc 
+ * @param nome 
+ * @param NIF 
+ * @param saldo 
+ * @param morada 
+ * @return int 
+ */
 int inserirClienteNoGrafo(Grafo g, char geocodigo[], int codigoc, char nome[], int NIF, float saldo, char morada[]) {
     while (g != NULL && strcmp(g->vertice, geocodigo) != 0) {
         g = g->seguinte;
     }
     
     if (g == NULL) {
-        return 0; // Vértice não encontrado no grafo
+        return 0; 
     } else {
         Cliente* novo = malloc(sizeof(Cliente));
         novo->codc = codigoc;
@@ -317,16 +415,20 @@ int inserirClienteNoGrafo(Grafo g, char geocodigo[], int codigoc, char nome[], i
         strcpy(novo->morada, morada);
         novo->seguinte = g->clientes;
         g->clientes = novo;
-        return 1; // Inserção bem-sucedida
+        return 1;
     }
 }
 
 
 
-
+/**
+ * @brief 
+ * 
+ * @param g 
+ */
 void saveClientes(Grafo g) {
     FILE* fp;
-    fp = fopen("clientes.txt", "w");
+    fp = fopen("clientesg.txt", "w");
 
     if (fp != NULL) {
         Grafo vertice = g;
@@ -349,9 +451,15 @@ void saveClientes(Grafo g) {
 }
 
 
+
+/**
+ * @brief 
+ * 
+ * @param g 
+ */
 void saveClientesbin(Grafo g) {
     FILE* fp;
-    fp = fopen("clientes.bin", "wb");
+    fp = fopen("clientesg.bin", "wb");
 
     if (fp != NULL) {
         Grafo vertice = g;
@@ -374,8 +482,14 @@ void saveClientesbin(Grafo g) {
 }
 
 
+
+/**
+ * @brief 
+ * 
+ * @param g 
+ */
 void readClientes(Grafo* g) {
-    FILE* fp = fopen("clientes.txt", "r");
+    FILE* fp = fopen("clientesg.txt", "r");
 
     if (fp != NULL) {
         char vVertice[250], vNome[100], vMorada[100];
@@ -395,7 +509,13 @@ void readClientes(Grafo* g) {
 
 
 
-
+/**
+ * @brief 
+ * 
+ * @param g 
+ * @param geocodigo 
+ * @return Grafo 
+ */
 Grafo procurarVertice(Grafo g, const char* geocodigo) 
 {
     while (g != NULL) {
@@ -404,13 +524,18 @@ Grafo procurarVertice(Grafo g, const char* geocodigo)
         }
         g = g->seguinte;
     }
-    return NULL; // Vértice não encontrado
+    return NULL; 
 }
 
 
 
 
-
+/**
+ * @brief 
+ * 
+ * @param g 
+ * @param vertice 
+ */
 void listarMeiosGrafo(Grafo g, char vertice[])
 {
     Grafo verticeEncontrado = procurarVertice(g, vertice);
@@ -441,7 +566,12 @@ void listarMeiosGrafo(Grafo g, char vertice[])
 
 
 
-
+/**
+ * @brief 
+ * 
+ * @param g 
+ * @param vertice 
+ */
 void listarClientesGrafo(Grafo g, char vertice[])
 {
     Grafo verticeEncontrado = procurarVertice(g, vertice);
@@ -470,23 +600,35 @@ void listarClientesGrafo(Grafo g, char vertice[])
     }
 }
 
-
+/**
+ * @brief 
+ * 
+ * @param g 
+ * @param geoccode 
+ * @return int 
+ */
 int clienteExiste(Grafo g, char geoccode[]) {
     while (g != NULL) {
         Cliente* aux = g->clientes;
         while (aux != NULL) {
             if (strcmp(aux->geocodigoc, geoccode) == 0) {
-                return 1; // Cliente encontrado
+                return 1; 
             }
             aux = aux->seguinte;
         }
         g = g->seguinte;
     }
     
-    return 0; // Cliente não encontrado
+    return 0; 
 }
 
-
+/**
+ * @brief 
+ * 
+ * @param g 
+ * @param geocode 
+ * @return Grafo 
+ */
 Grafo findNode(Grafo g, char geocode[]) 
 {
     while (g != NULL) 
@@ -500,6 +642,15 @@ Grafo findNode(Grafo g, char geocode[])
     return NULL;
 }
 
+
+/**
+ * @brief 
+ * 
+ * @param g 
+ * @param geocode 
+ * @param type 
+ * @param radius 
+ */
 void listVehiclesPerRadius(Grafo g, char geocode[], char type[], float radius) 
 {
     if (g != NULL) {
@@ -516,6 +667,17 @@ void listVehiclesPerRadius(Grafo g, char geocode[], char type[], float radius)
     }
 }
 
+
+
+/**
+ * @brief 
+ * 
+ * @param node 
+ * @param type 
+ * @param radius 
+ * @param currentWeight 
+ * @param g 
+ */
 void traverseEdgesDFS(Grafo node, char type[], float radius, float currentWeight, Grafo g) 
 {
     if ((node->visitado == 1) || (node->visitado == 2) || currentWeight>radius) return;
@@ -550,10 +712,14 @@ void traverseEdgesDFS(Grafo node, char type[], float radius, float currentWeight
 
 
 
-
+/**
+ * @brief 
+ * 
+ * @param g 
+ */
 void listarMeiosBaixaBateria(Grafo g) 
 {
-    int encontrouMeios = 0; // Variável para verificar se há meios com menos de 50% de bateria
+    int encontrouMeios = 0; 
     
     while (g != NULL) {
         printf("Vértice: %s\n", g->vertice);
@@ -578,6 +744,12 @@ void listarMeiosBaixaBateria(Grafo g)
 }
 
 
+
+/**
+ * @brief 
+ * 
+ * @param g 
+ */
 void Visitados(Grafo g) 
 {
     while (g != NULL) {
@@ -587,72 +759,128 @@ void Visitados(Grafo g)
 }
 
 
-/*void printPathAndWeight(Grafo node, float weight) {
-    if (node != NULL) {
-        printPathAndWeight(node->seguinte, weight + node->distancia);
-        printf("%s -> ", node->vertice);
-    }
-}
+/**
+ * @brief 
+ * 
+ * @param grafo 
+ */
+void apresentarMeiosEstadoBateria(Grafo grafo) {
+    Grafo atual = grafo;
 
-void IItraverseEdgesDFS(Grafo node, float batteryThreshold, float currentWeight, Grafo g, int searchType, char path[], float pathWeight) {
-    if (node->visitado == 1) return;
-    node->visitado = 1;
+    while (atual != NULL) {
+        Meio* meioAtual = atual->meios;
 
-    if (searchType == 1) {
-        Meio* meios = node->meios;
-        while (meios != NULL) {
-            if (meios->bateria < batteryThreshold)
-             {
-                printf("Path: ");
-                printPathAndWeight(node, pathWeight);
-                printf("%s (Battery: %.2f)\n", meios->geocodigo, meios->bateria);
+        while (meioAtual != NULL) {
+            if (meioAtual->estado == 0 && meioAtual->bateria < 50.0) {
+                Grafo verticeAtual = grafo;
+                int repetido = 0;
+
+                while (verticeAtual != atual) {
+                    if (strcmp(verticeAtual->vertice, atual->vertice) == 0) {
+                        repetido = 1;
+                        break;
+                    }
+                    verticeAtual = verticeAtual->seguinte;
+                }
+
+                if (!repetido) {
+                    printf("Vertice: %s, Codigo do Meio: %d, bateria: %.2f, estado: %d\n", atual->vertice, meioAtual->codm, meioAtual->bateria, meioAtual->estado);
+                }
             }
-            meios = meios->seguinte;
-        }
-    }
 
-    Adjacente adjacentes = node->adjacentes;
-    while (adjacentes != NULL) {
-        Grafo nextNode = findNode(g, adjacentes->vertice);
-        if (nextNode != NULL) {
-            float newWeight = currentWeight + adjacentes->peso;
-            char newPath[500];
-            sprintf(newPath, "%s -> %s", path, nextNode->vertice);
-            IItraverseEdgesDFS(nextNode, batteryThreshold, newWeight, g, searchType, newPath, pathWeight + adjacentes->peso);
+            meioAtual = meioAtual->seguinte;
         }
-        adjacentes = adjacentes->seguinte;
+
+        atual = atual->seguinte;
     }
 }
 
-void findPathsLowBattery(Grafo g, float batteryThreshold) 
-{
-    Grafo currentNode = g;
-    while (currentNode != NULL) {
-        if (currentNode->visitado == 0 && currentNode->meios != NULL) {
-            char path[500];
-            sprintf(path, "%s", currentNode->vertice);
-            IItraverseEdgesDFS(currentNode, batteryThreshold, 0.0, g, 1, path, 0.0);
-        }
-        currentNode = currentNode->seguinte;
+
+
+/**
+ * @brief 
+ * 
+ */
+void printPath(Grafo node, int caminhoAtual) {
+    if (node == NULL)
+        return;
+
+    printf("Caminho %d: ", caminhoAtual);
+    while (node != NULL) {
+        printf("%s -> ", node->vertice);
+        node = node->seguinte;
     }
+    printf("\n");
 }
 
-void listAllPathsLowBattery(Grafo g, float batteryThreshold) 
-{
-    Grafo currentNode = g;
-    while (currentNode != NULL) {
-        IItraverseEdgesDFS(currentNode, batteryThreshold, 0.0, g, 1, "", 0.0);
-        resetVisitedFlag(g);
-        currentNode = currentNode->seguinte;
+/**
+ * @brief 
+ * 
+ * @param g 
+ * @param inicio 
+ */
+void findShortestPaths(Grafo g, char* inicio) {
+    if (g == NULL) {
+        printf("Graph is empty!\n");
+        return;
     }
-}
-
-void resetVisitedFlag(Grafo g) 
-{
     Grafo currentNode = g;
     while (currentNode != NULL) {
+        currentNode->distancia = INT_MAX;
         currentNode->visitado = 0;
         currentNode = currentNode->seguinte;
     }
-}*/
+    Grafo startNode = findNode(g, inicio);
+    if (startNode == NULL) {
+        printf("Start node not found!\n");
+        return;
+    }
+    startNode->distancia = 0;    
+    int caminhoAtual = 1; 
+    IIItraverseNodesDFS(startNode, g, caminhoAtual);
+    currentNode = g;
+    while (currentNode != NULL) {
+        if (currentNode->distancia < INT_MAX && currentNode->distancia > 0)
+            printPath(currentNode, currentNode->caminho);
+        currentNode = currentNode->seguinte;
+    }
+}
+
+/**
+ * @brief 
+ * 
+ * @param node 
+ * @param g 
+ * @param caminhoAtual 
+ */
+void IIItraverseNodesDFS(Grafo node, Grafo g, int caminhoAtual) 
+{
+    if (node == NULL || node->visitado == 1)
+        return;
+
+    node->visitado = 1;
+    node->caminho = caminhoAtual;
+    Meio* meioAtual = node->meios;
+    while (meioAtual != NULL) {
+        if (meioAtual->bateria < 50.0) {
+            meioAtual->estado = 2; 
+        }
+        meioAtual = meioAtual->seguinte;
+    }
+    Adjacente adjacenteAtual = node->adjacentes;
+    while (adjacenteAtual != NULL) {
+        Grafo adjacentNode = findNode(g, adjacenteAtual->vertice);
+        if (adjacentNode != NULL && adjacentNode->visitado == 0) {
+            float weight = adjacenteAtual->peso;
+            float newDistance = node->distancia + weight;
+            if (newDistance < adjacentNode->distancia && 
+                adjacentNode->meios->bateria < 50.0) {
+                adjacentNode->distancia = newDistance;
+            }
+
+            IIItraverseNodesDFS(adjacentNode, g, caminhoAtual);
+        }
+        adjacenteAtual = adjacenteAtual->seguinte;
+    }
+}
 
