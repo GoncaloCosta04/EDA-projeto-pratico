@@ -1,0 +1,4 @@
+Faro 4 Ana Rua D  150.00
+Lisboa 1 João Rua A  100.00
+Coimbra 3 Pedro Rua C  200.00
+Porto 2 Maria Rua B  50.00

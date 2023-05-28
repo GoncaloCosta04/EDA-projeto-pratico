@@ -1,0 +1,4 @@
+Faro 4 Carro 90.00 180.00 9.00 1 4.00
+Lisboa 1 Carro 12.00 200.00 10.00 1 5.00
+Coimbra 3 Moto 80.00 150.00 8.00 1 3.00
+Porto 2 Bicicleta 0.00 50.00 5.00 0 2.00

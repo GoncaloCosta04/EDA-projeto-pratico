@@ -1,0 +1,5 @@
+Aveiro Lisboa 350.00
+Porto Lisboa 70.00
+Porto Aveiro 70.00
+Braga Aveiro 120.00
+Braga Porto 50.00
