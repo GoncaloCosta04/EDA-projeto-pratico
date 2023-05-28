@@ -26,7 +26,6 @@ typedef struct registo2 {
     struct registo2* seguinte;
 } *Adjacente;
 
-
 int criarVertice(Grafo *g, char novoId[]);
 int existeVertice(Grafo g, char vertice[]); 
 void saveVertices(Grafo g);
@@ -48,19 +47,13 @@ Grafo procurarVertice(Grafo g, const char* geocodigo);
 void listarMeiosGrafo(Grafo g, char vertice[]);
 void listarClientesGrafo(Grafo g, char vertice[]);
 void listarMeiosBaixaBateria(Grafo g);
-
-
-
-
 int clienteExiste(Grafo g, char geoccode[]);
 Grafo findNode(Grafo g, char geocode[]);
 void traverseEdgesDFS(Grafo node, char type[], float radius, float currentWeight, Grafo g);
 void listVehiclesPerRadius(Grafo g, char geocode[], char type[], float radius);
 void Visitados(Grafo g);    
-void printPathAndWeight(Grafo node, float weight);
-void IItraverseEdgesDFS(Grafo node, float batteryThreshold, float currentWeight, Grafo g, int searchType, char path[], float pathWeight);
-void findPathsLowBattery(Grafo g, float batteryThreshold);
-void listAllPathsLowBattery(Grafo g, float batteryThreshold);
-void resetVisitedFlag(Grafo g);
-
+void printPath(Grafo node, int caminhoAtual);
+void findShortestPaths(Grafo g, char* inicio);
+void IIItraverseNodesDFS(Grafo node, Grafo g, int caminhoAtual);
+void apresentarMeiosEstadoBateria(Grafo grafo);
 
