@@ -521,8 +521,11 @@ break;
             case 11:
 apresentarMeiosEstadoBateria(grafo);
             break;
-                case 12:
-findShortestPaths(grafo, "Porto");
+		case 12:
+ char inicio[250];
+            printf("Digite o inicio: ");
+            scanf("%s", inicio);
+            findShortestPaths(grafo, inicio);  
     break;
 
             case 0:
