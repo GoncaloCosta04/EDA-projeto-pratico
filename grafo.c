@@ -600,40 +600,12 @@ void listarClientesGrafo(Grafo g, char vertice[])
     }
 }
 
-/**
- * @brief 
- * 
- * @param g 
- * @param geoccode 
- * @return int 
- */
-int clienteExiste(Grafo g, char geoccode[]) {
-    while (g != NULL) {
-        Cliente* aux = g->clientes;
-        while (aux != NULL) {
-            if (strcmp(aux->geocodigoc, geoccode) == 0) {
-                return 1; 
-            }
-            aux = aux->seguinte;
-        }
-        g = g->seguinte;
-    }
-    
-    return 0; 
-}
 
-/**
- * @brief 
- * 
- * @param g 
- * @param geocode 
- * @return Grafo 
- */
 Grafo findNode(Grafo g, char geocode[]) 
 {
     while (g != NULL) 
     {
-        if (strcmp(g->vertice, geocode) == 0 && g->visitado == 0) 
+        if (strcmp(g->vertice, geocode) == 0 && (g->visitado == 0 || g->visitado == 1)) 
         {
             return g;
         }
@@ -642,15 +614,6 @@ Grafo findNode(Grafo g, char geocode[])
     return NULL;
 }
 
-
-/**
- * @brief 
- * 
- * @param g 
- * @param geocode 
- * @param type 
- * @param radius 
- */
 void listVehiclesPerRadius(Grafo g, char geocode[], char type[], float radius) 
 {
     if (g != NULL) {
@@ -667,20 +630,9 @@ void listVehiclesPerRadius(Grafo g, char geocode[], char type[], float radius)
     }
 }
 
-
-
-/**
- * @brief 
- * 
- * @param node 
- * @param type 
- * @param radius 
- * @param currentWeight 
- * @param g 
- */
 void traverseEdgesDFS(Grafo node, char type[], float radius, float currentWeight, Grafo g) 
 {
-    if ((node->visitado == 1) || (node->visitado == 2) || currentWeight>radius) return;
+    if ((node->visitado == 1) || (node->visitado == 2) || currentWeight > radius) return;
     node->visitado = 1;
 
     Meio* meios = node->meios;
@@ -708,40 +660,10 @@ void traverseEdgesDFS(Grafo node, char type[], float radius, float currentWeight
         }
         adjacentes = adjacentes->seguinte;
     }
+
+    if (node->visitado == 1) node->visitado = 0;
 }
 
-
-
-/**
- * @brief 
- * 
- * @param g 
- */
-void listarMeiosBaixaBateria(Grafo g) 
-{
-    int encontrouMeios = 0; 
-    
-    while (g != NULL) {
-        printf("Vértice: %s\n", g->vertice);
-        
-        Meio* meio = g->meios;
-        while (meio != NULL) {
-            if (meio->bateria < 50.0) 
-            {
-                encontrouMeios = 1;
-                printf("Meio com baixa bateria: Código: %d, Tipo: %s, Bateria: %.2f\n",
-                       meio->codm, meio->tipo, meio->bateria);
-            }
-            meio = meio->seguinte;
-        }
-        
-        g = g->seguinte;
-    }
-    
-    if (!encontrouMeios) {
-        printf("Não foram encontrados meios com menos de 50%% de bateria em nenhum vértice.\n");
-    }
-}
 
 
 
@@ -757,6 +679,7 @@ void Visitados(Grafo g)
         g = g->seguinte;
     }
 }
+
 
 
 /**
@@ -873,9 +796,10 @@ void IIItraverseNodesDFS(Grafo node, Grafo g, int caminhoAtual)
         if (adjacentNode != NULL && adjacentNode->visitado == 0) {
             float weight = adjacenteAtual->peso;
             float newDistance = node->distancia + weight;
-            if (newDistance < adjacentNode->distancia && 
-                adjacentNode->meios->bateria < 50.0) {
-                adjacentNode->distancia = newDistance;
+            if (adjacentNode->meios != NULL && adjacentNode->meios->bateria < 50.0) {
+                if (newDistance < adjacentNode->distancia) {
+                    adjacentNode->distancia = newDistance;
+                }
             }
 
             IIItraverseNodesDFS(adjacentNode, g, caminhoAtual);
@@ -883,4 +807,3 @@ void IIItraverseNodesDFS(Grafo node, Grafo g, int caminhoAtual)
         adjacenteAtual = adjacenteAtual->seguinte;
     }
 }
-
