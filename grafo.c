@@ -601,6 +601,7 @@ void listarClientesGrafo(Grafo g, char vertice[])
 }
 
 
+
 Grafo findNode(Grafo g, char geocode[]) 
 {
     while (g != NULL) 
@@ -620,7 +621,7 @@ void listVehiclesPerRadius(Grafo g, char geocode[], char type[], float radius)
         Grafo clientNode = findNode(g, geocode);
         if (clientNode == NULL) 
         {
-            printf("Geocode doesn't exist in the graph!\n");
+            printf("Geocodgico nao existe !\n");
             return;
         }
         traverseEdgesDFS(clientNode, type, radius, 0.0, g);
@@ -679,7 +680,6 @@ void Visitados(Grafo g)
         g = g->seguinte;
     }
 }
-
 
 
 /**
@@ -807,3 +807,5 @@ void IIItraverseNodesDFS(Grafo node, Grafo g, int caminhoAtual)
         adjacenteAtual = adjacenteAtual->seguinte;
     }
 }
+
+
